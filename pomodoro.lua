@@ -4,8 +4,8 @@ local awful     = require('awful')
 local naughty   = require('naughty')
 
 local pomodoro      = {}
-pomodoro.rest_time  = 301
-pomodoro.work_time  = 1501
+pomodoro.rest_time  = 5  * 60
+pomodoro.work_time  = 25 * 60
 
 pomodoro.rest_done  = {title = 'Break finished.', text = 'Get back to work!'}
 pomodoro.work_done  = {title = 'Work complete.',  text = 'Time for a break!'}
