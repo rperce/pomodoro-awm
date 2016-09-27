@@ -80,9 +80,13 @@ pomodoro.states = {
         color   = pomodoro.colors.rest,
         onEnter = function() pomodoro.time_left = pomodoro.rest_time end,
         onExit  = function()
-            if pomodoro.pause_after_break then pomodoro.timer:stop() end
+            out = pomodoro.states.work
+            if pomodoro.pause_after_break then
+                pomodoro.timer:stop()
+                out = pomodoro.states.work_pause
+            end
             pomodoro:notify(pomodoro.rest_done)
-            return pomodoro.states.work
+            return out
         end,
         onLeftClick  = function()
             pomodoro.timer:stop()
