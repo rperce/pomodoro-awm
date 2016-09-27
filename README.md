@@ -1,7 +1,7 @@
 Pomodoro Timer for AwesomeWM
 ===
 
-<span><div>![Plain](docs/plain.png)<p>Timer widget sitting in the wibox</p></div></span> ![Hover](docs/hover.png)
+![Plain](docs/plain.png) ![Hover](docs/hover.png)
 ![Work Hover](docs/work_hover.png) ![Next Work](docs/next_work.png)
 
 Images: 1) timer widget sitting in the wibox, 2) hovering over the widget;
