@@ -1,19 +1,19 @@
 Pomodoro Timer for AwesomeWM
 ===
 
-![Plain](docs/plain.png) | ![Hover](docs/hover.png)
-![Work Hover](docs/work_hover.png) | ![Next Work](docs/next_work.png)
-test1 | test2
+![Plain](docs/plain.png) ![Hover](docs/hover.png)
+![Work Hover](docs/work_hover.png) ![Next Work](docs/next_work.png)
 
-Images: 1) timer widget sitting in the wibox, 2) hovering over the widget;
-3) just after left-clicking, 4) notification at the end of a break
+Images: 1) timer widget sitting in the wibox, off; 2) hovering over the widget;
+3) just after left-clicking: work time, 4) notification at the end of a break
+(already back in work time)
 
 Also pictured is my
 [alsa widget](https://github.com/rperce/dotfiles/blob/master/awesome/.config/awesome/widgets/alsa.lua),
 [battery widget](https://github.com/rperce/dotfiles/blob/master/awesome/.config/awesome/widgets/battery.lua),
 and
 [english-word clock](https://github.com/rperce/dotfiles/blob/master/awesome/.config/awesome/widgets/clock.lua),
-which uses
+the last of which uses
 [this small ruby program](https://github.com/rperce/dotfiles/blob/master/path/path/wordtime).
 
 Installation
@@ -42,3 +42,19 @@ end
 ```
 
 And restart AwesomeWM (Mod4 + Ctrl + r, by default).
+
+Features
+---
+* Left click starts (if currently off) or pauses/unpauses
+* Right click skips current period
+* Middle click turns timer off
+* Easy to configure:
+ - work and rest times (default: 25m and 5m, respectively)
+ - automatically pause timer after a rest (default: no)
+ - colors (default: off=`beautiful.fg_normal`, work=#f00, work-pause=#a50, rest=#1c0, rest-pause=#dc0)
+ - widget icon (default: a unicode tomato, &#x1f345;)
+ - notification messages (default: 'Break finished./Get back to work!' and 'Work complete./Time for a break!')
+
+License
+---
+This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
