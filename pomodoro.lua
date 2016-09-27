@@ -20,7 +20,7 @@ pomodoro.colors = { work = 'red', work_pause = '#a50', rest = '#1c0', rest_pause
 
 pomodoro.widget     = wibox.widget.textbox()
 pomodoro.tooltip    = awful.tooltip({ objects = {pomodoro.widget} })
-pomodoro.timer      = timer({ timeout = 0.1 }) --seconds
+pomodoro.timer      = timer({ timeout = 1 }) --seconds
 
 function pomodoro:notify(contents)
     naughty.notify({
