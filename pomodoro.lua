@@ -18,6 +18,9 @@ pomodoro.long_break_time = 30 * 60
 
 pomodoro.pause_after_break = false
 
+-- set to nil to disable ding
+pomodoro.ding = debug.getinfo(1).source:sub(2):match('(.*/)') .. 'resources/ding.wav'
+
 pomodoro.colors = { work       = 'red',
                     work_pause = '#a50',
                     rest       = '#1c0',
@@ -31,11 +34,20 @@ pomodoro.tooltip    = awful.tooltip({ objects = {pomodoro.widget} })
 pomodoro.timer      = timer({ timeout = 1 }) --seconds
 pomodoro.completed  = 0
 
+naughty.notify({
+    title='dir',
+    text=debug.getinfo(1).source:sub(2):match('.*/')
+})
 function pomodoro:notify(contents)
     naughty.notify({
         title = contents.title,
         text  = contents.text
     })
+end
+function pomodoro:play_ding()
+    if pomodoro.ding ~= nil then
+        awful.util.spawn('aplay ' .. pomodoro.ding)
+    end
 end
 
 local function switchState(state)
@@ -51,9 +63,9 @@ local function set_tomato()
         local m = pomodoro.time_left // 60
         local s = pomodoro.time_left - m * 60
         if pomodoro.display_time_in_widget then
-            widget_text = widget_text .. string.format('<span> %d:%s</span>', m, s)
+            widget_text = widget_text .. string.format('<span> %d:%02d</span>', m, s)
         end
-        tooltip_text = string.format('<b>%dm %ds</b> remaining', m, s)
+        tooltip_text = string.format('<b>%dm %02ds</b> remaining', m, s)
         if pomodoro.state == pomodoro.states.work and pomodoro.long_break_after ~= -1 then
             tooltip_text = tooltip_text .. string.format(' (#%d of %d)', pomodoro.completed + 1, pomodoro.long_break_after)
         end
@@ -71,6 +83,7 @@ pomodoro.states = {
         onEnter = function() pomodoro.time_left = pomodoro.work_time end,
         onExit  = function()
             pomodoro:notify(pomodoro.work_done)
+            pomodoro:play_ding()
             return pomodoro.states.rest
         end,
         onLeftClick = function()
@@ -111,6 +124,7 @@ pomodoro.states = {
                 out = pomodoro.states.work_pause
             end
             pomodoro:notify(pomodoro.rest_done)
+            pomodoro:play_ding()
             return out
         end,
         onLeftClick = function()

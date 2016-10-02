@@ -1,8 +1,8 @@
 Pomodoro Timer for AwesomeWM
 ===
 
-![Plain](docs/plain.png) ![Hover](docs/hover.png)
-![Work Hover](docs/work_hover.png) ![Next Work](docs/next_work.png)
+![Plain](resources/plain.png) ![Hover](resources/hover.png)
+![Work Hover](resources/work_hover.png) ![Next Work](resources/next_work.png)
 
 Images: 1) timer widget sitting in the wibox, off; 2) hovering over the widget;
 3) just after left-clicking: work time, 4) notification at the end of a break
@@ -54,6 +54,7 @@ Features
  - if long breaks occur at all (default: yes)
  - if time remaining is displayed in widget (default: yes)
  - automatically pause timer after a rest (default: no)
+ - sound on session end (default: yes)
  - colors (default: off=`beautiful.fg_normal`, work=#ff0000, work-pause=#aa5500, rest=#11cc00, rest-pause=#ddcc00)
  - widget icon (default: a unicode tomato, &#x1f345;)
  - notification messages (default: 'Break finished./Get back to work!' and 'Work complete./Time for a break!')
