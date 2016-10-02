@@ -12,15 +12,24 @@ pomodoro.work_done  = {title = 'Work complete.',  text = 'Time for a break!'}
 
 pomodoro.icon       = '&#x1f345;' --unicode tomato
 
+-- set long_break_after to -1 to disable long breaks
+pomodoro.long_break_after = 4
+pomodoro.long_break_time = 30 * 60
+
 pomodoro.pause_after_break = false
 
-pomodoro.colors = { work = 'red', work_pause = '#a50', rest = '#1c0', rest_pause = '#dc0',
-                    off = beautiful.fg_normal }
+pomodoro.colors = { work       = 'red',
+                    work_pause = '#a50',
+                    rest       = '#1c0',
+                    rest_pause = '#dc0',
+                    off        = beautiful.fg_normal }
 
+pomodoro.display_time_in_widget = true
 
 pomodoro.widget     = wibox.widget.textbox()
 pomodoro.tooltip    = awful.tooltip({ objects = {pomodoro.widget} })
 pomodoro.timer      = timer({ timeout = 1 }) --seconds
+pomodoro.completed  = 0
 
 function pomodoro:notify(contents)
     naughty.notify({
@@ -36,16 +45,22 @@ local function switchState(state)
     end
 end
 local function set_tomato()
-    pomodoro.widget:set_markup(string.format(
-        '<span size="x-large" foreground="%s"><b>%s</b></span>',
-        pomodoro.state.color, pomodoro.icon))
-
+    local widget_text = '<span size="x-large" foreground="%s"><b>%s</b></span>';
     local tooltip_text = 'Pomodoro timer'
     if pomodoro.state ~= pomodoro.states.off then
         local m = pomodoro.time_left // 60
         local s = pomodoro.time_left - m * 60
+        if pomodoro.display_time_in_widget then
+            widget_text = widget_text .. string.format('<span> %d:%s</span>', m, s)
+        end
         tooltip_text = string.format('<b>%dm %ds</b> remaining', m, s)
+        if pomodoro.state == pomodoro.states.work and pomodoro.long_break_after ~= -1 then
+            tooltip_text = tooltip_text .. string.format(' (#%d of %d)', pomodoro.completed + 1, pomodoro.long_break_after)
+        end
     end
+
+    pomodoro.widget:set_markup(string.format(widget_text, pomodoro.state.color, pomodoro.icon))
+
     pomodoro.tooltip:set_markup(string.format(
         '<span size="xx-large" foreground="%s"><b>%s </b></span><span size="x-large">%s</span>',
         pomodoro.state.color, pomodoro.icon, tooltip_text))
@@ -58,7 +73,7 @@ pomodoro.states = {
             pomodoro:notify(pomodoro.work_done)
             return pomodoro.states.rest
         end,
-        onLeftClick  = function()
+        onLeftClick = function()
             pomodoro.timer:stop()
             pomodoro.state = pomodoro.states.work_pause
             set_tomato()
@@ -67,7 +82,7 @@ pomodoro.states = {
     },
     work_pause = {
         color   = pomodoro.colors.work_pause,
-        onLeftClick  = function()
+        onLeftClick = function()
             pomodoro.timer:start()
             pomodoro.state = pomodoro.states.work
         end,
@@ -78,7 +93,17 @@ pomodoro.states = {
     },
     rest = {
         color   = pomodoro.colors.rest,
-        onEnter = function() pomodoro.time_left = pomodoro.rest_time end,
+        onEnter = function()
+            if pomodoro.long_break_after ~= -1 then
+                pomodoro.completed = pomodoro.completed + 1
+            end
+            if pomodoro.completed == pomodoro.long_break_after then
+                pomodoro.time_left = pomodoro.long_break_time
+                pomodoro.completed = 0
+            else
+                pomodoro.time_left = pomodoro.rest_time
+            end
+        end,
         onExit  = function()
             out = pomodoro.states.work
             if pomodoro.pause_after_break then
@@ -88,7 +113,7 @@ pomodoro.states = {
             pomodoro:notify(pomodoro.rest_done)
             return out
         end,
-        onLeftClick  = function()
+        onLeftClick = function()
             pomodoro.timer:stop()
             pomodoro.state = pomodoro.states.rest_pause
             set_tomato()
@@ -97,7 +122,7 @@ pomodoro.states = {
     },
     rest_pause = {
         color   = pomodoro.colors.rest_pause,
-        onLeftClick  = function()
+        onLeftClick = function()
             pomodoro.timer:start()
             pomodoro.state = pomodoro.states.rest
         end,

@@ -50,8 +50,11 @@ Features
 * Middle click turns timer off
 * Easy to configure:
  - work and rest times (default: 25m and 5m, respectively)
+ - number of pomodoros before a long break (default: 4)
+ - if long breaks occur at all (default: yes)
+ - if time remaining is displayed in widget (default: yes)
  - automatically pause timer after a rest (default: no)
- - colors (default: off=`beautiful.fg_normal`, work=#f00, work-pause=#a50, rest=#1c0, rest-pause=#dc0)
+ - colors (default: off=`beautiful.fg_normal`, work=#ff0000, work-pause=#aa5500, rest=#11cc00, rest-pause=#ddcc00)
  - widget icon (default: a unicode tomato, &#x1f345;)
  - notification messages (default: 'Break finished./Get back to work!' and 'Work complete./Time for a break!')
 
