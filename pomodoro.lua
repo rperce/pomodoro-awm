@@ -34,10 +34,6 @@ pomodoro.tooltip    = awful.tooltip({ objects = {pomodoro.widget} })
 pomodoro.timer      = timer({ timeout = 1 }) --seconds
 pomodoro.completed  = 0
 
-naughty.notify({
-    title='dir',
-    text=debug.getinfo(1).source:sub(2):match('.*/')
-})
 function pomodoro:notify(contents)
     naughty.notify({
         title = contents.title,
